@@ -35,7 +35,7 @@ const ymd = (v: string | undefined) => (v && /^\d{8}$/.test(v) ? `${v.slice(0, 4
 /** 소비자용 완제품이 아닌 행을 걸러 낸다. 이유를 돌려주고, 통과하면 null. */
 export function exclusionReason(r: I0030Row): keyof CatalogMeta["excluded"] | null {
   if (/원료로\s*사용/.test(r.NTK_MTHD ?? "")) return "rawMaterial";
-  if (/전량\s*수출/.test(r.PRDLST_NM ?? "")) return "exportOnly";
+  if (/전량\s*수출|수출\s*(용|전용)/.test(r.PRDLST_NM ?? "")) return "exportOnly"; // "(수출용)", "(일본수출용)", "(수출전용)" 등
   if (/^\s*\(구\)/.test(r.PRDLST_NM ?? "")) return "renamed";
   return null;
 }

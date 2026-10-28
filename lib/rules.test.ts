@@ -20,10 +20,13 @@ test("원료용·수출용·(구) 제품은 카탈로그에서 빠진다", () =>
     row({ PRDLST_REPORT_NO: "a", NTK_MTHD: "건강기능식품 원료로 사용" }),
     row({ PRDLST_REPORT_NO: "b", PRDLST_NM: "(전량수출용)비타민" }),
     row({ PRDLST_REPORT_NO: "c", PRDLST_NM: "(구) 루테인" }),
+    row({ PRDLST_REPORT_NO: "e", PRDLST_NM: "WOMEN'S BALANCE (수출용)" }),
+    row({ PRDLST_REPORT_NO: "f", PRDLST_NM: "Duolac Baby(일본수출용)" }),
+    row({ PRDLST_REPORT_NO: "g", PRDLST_NM: "비타민 젤리(수출전용)" }),
     row({ PRDLST_REPORT_NO: "d", PRIMARY_FNCLTY: "눈의 피로도 개선에 도움을 줄 수 있음" }),
   ]));
   assert.equal(c.products.length, 1);
-  assert.deepEqual(c.meta.excluded, { rawMaterial: 1, exportOnly: 1, renamed: 1 });
+  assert.deepEqual(c.meta.excluded, { rawMaterial: 1, exportOnly: 4, renamed: 1 });
   assert.deepEqual(c.products[0].areas, ["eye"]); // 눈의 피로도는 피로 개선 분야가 아니다
   assert.equal(c.products[0].source.officialUpdatedAt, "2026-07-21");
 });
@@ -94,12 +97,16 @@ test("원격 카탈로그는 형식이 하나라도 어긋나면 통째로 버�
   assert.equal(parseCatalog(bad), null);
 });
 
-test("브랜드 후보 규칙: 업소명·제품명 포함, 제외어 우선, 띄어쓰기 무시", async () => {
+test("브랜드 후보 규칙: 확실·확인 필요 구분, 제외어 우선, 띄어쓰기 무시", async () => {
   const { matchBrand } = await import("./brand-match.ts");
-  const ckd = { id: "ckdhc", name: "종근당건강", company: "", products: [], rules: { manufacturer: ["종근당건강"], excludeName: ["락토핏"] } };
-  assert.equal(matchBrand(ckd, { name: "프로메가", manufacturer: "종근당건강(주)" }), "업소명:종근당건강");
+  const b = (rules: object) => ({ id: "x", name: "x", company: "", products: [], rules });
+  const ckd = b({ manufacturer: ["종근당건강"], excludeName: ["락토핏"] });
+  assert.deepEqual(matchBrand(ckd, { name: "프로메가", manufacturer: "종근당건강(주)" }), { by: "업소명:종근당건강", sure: true });
   assert.equal(matchBrand(ckd, { name: "락토핏 생유산균 골드", manufacturer: "종근당건강(주)" }), null);
-  const lacto = { id: "lactofit", name: "락토핏", company: "", products: [], rules: { name: ["락토핏"] } };
-  assert.equal(matchBrand(lacto, { name: "락토 핏 골드", manufacturer: "다른공장" }), "제품명:락토핏");
-  assert.equal(matchBrand(lacto, { name: "비타민C", manufacturer: "다른공장" }), null);
+  assert.deepEqual(matchBrand(b({ name: ["락토핏"] }), { name: "락토 핏 골드", manufacturer: "다른공장" }), { by: "제품명:락토핏", sure: true });
+  const yuhan = b({ name: ["유한m"], weakName: ["유한"] });
+  assert.equal(matchBrand(yuhan, { name: "유한m 비타민", manufacturer: "a" })?.sure, true);
+  assert.equal(matchBrand(yuhan, { name: "에스트로지 유한백수오", manufacturer: "a" })?.sure, false);
+  assert.equal(matchBrand(b({ manufacturerOem: ["일동바이오사이언스"] }), { name: "유산균", manufacturer: "일동바이오사이언스(주)" })?.sure, false);
+  assert.equal(matchBrand(b({ name: ["락토핏"] }), { name: "비타민C", manufacturer: "다른공장" }), null);
 });
