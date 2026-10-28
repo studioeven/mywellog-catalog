@@ -109,4 +109,10 @@ test("브랜드 후보 규칙: 확실·확인 필요 구분, 제외어 우선, �
   assert.equal(matchBrand(yuhan, { name: "에스트로지 유한백수오", manufacturer: "a" })?.sure, false);
   assert.equal(matchBrand(b({ manufacturerOem: ["일동바이오사이언스"] }), { name: "유산균", manufacturer: "일동바이오사이언스(주)" })?.sure, false);
   assert.equal(matchBrand(b({ name: ["락토핏"] }), { name: "비타민C", manufacturer: "다른공장" }), null);
+  const gnm = b({ name: ["GNM", "지엔엠"], manufacturerOem: ["메디오젠"] });
+  assert.equal(matchBrand(gnm, { name: "Young NMN 40,500mg+", manufacturer: "a" }), null); // 띄어쓰기를 지워 생긴 가짜 일치
+  assert.equal(matchBrand(gnm, { name: "GNM 비타민C 3000", manufacturer: "a" })?.sure, true);
+  assert.equal(matchBrand(gnm, { name: "8종혼합유산균지엔엠(GNM)2", manufacturer: "(주)메디오젠" })?.sure, false);
+  assert.equal(matchBrand(gnm, { name: "다른 브랜드 유산균", manufacturer: "(주)메디오젠" }), null);
+  assert.equal(matchBrand(b({ weakName: ["CJ"] }), { name: "CJ코엔자임큐텐", manufacturer: "a" })?.sure, false);
 });
