@@ -1,0 +1,11 @@
+{
+  "name": "mywellog-catalog",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=24" },
+  "scripts": {
+    "sync": "node --env-file-if-exists=.env.local scripts/sync-i0030.mjs",
+    "build:catalog": "node scripts/build-catalog.ts",
+    "test": "node --test \"lib/**/*.test.ts\""
+  }
+}
