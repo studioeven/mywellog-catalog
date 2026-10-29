@@ -21,6 +21,7 @@ export interface ProductSummary {
   functionalIngredients: string[]; // 기능성 원재료 (official)
   otherIngredients: string[]; // 기타·캡슐 원재료 (official)
   discontinued: boolean | null; // 생산 종료 여부. 판매 상태가 아니다.
+  reportedAt?: string | null; // 품목제조 신고일 (official PRMS_DT, YYYY-MM-DD). 예전 인덱스에는 없다.
   areas: string[]; // 기능성 분야 (service: 주된 기능성 문구를 키워드로 분류)
   sponsorship: null | { label: string }; // 광고·제휴. 개인화 점수에 쓰지 않는다.
   hasFunctionality: boolean; // 주된 기능성 원문이 있는지. 없으면 추천 근거가 될 수 없다.

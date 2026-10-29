@@ -57,6 +57,7 @@ export function toProduct(r: I0030Row, file: Pick<I0030File, "source" | "sourceU
     storage: clean(r.CSTDY_MTHD),
     standard: clean(r.STDR_STND),
     discontinued: r.PRODUCTION === "예" ? true : r.PRODUCTION === "아니오" ? false : null,
+    reportedAt: ymd(r.PRMS_DT),
     areas: classifyAreas(functionality),
     hasFunctionality: functionality !== null,
     noteFlags: Object.entries(NOTE_PATTERNS).filter(([, re]) => re!.test(r.IFTKN_ATNT_MATR_CN ?? "")).map(([k]) => k),

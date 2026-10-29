@@ -28,6 +28,7 @@ test("원료용·수출용·(구) 제품은 카탈로그에서 빠진다", () =>
   assert.equal(c.products.length, 1);
   assert.deepEqual(c.meta.excluded, { rawMaterial: 1, exportOnly: 4, renamed: 1 });
   assert.deepEqual(c.products[0].areas, ["eye"]); // 눈의 피로도는 피로 개선 분야가 아니다
+  assert.equal(toCatalog(file([row({ PRMS_DT: "20240305" })])).products[0].reportedAt, "2024-03-05");
   assert.equal(c.products[0].source.officialUpdatedAt, "2026-07-21");
 });
 

@@ -14,7 +14,7 @@ const full = toCatalog(raw);
 const summary = (p: Product): ProductSummary => ({
   id: p.id, name: p.name, manufacturer: p.manufacturer, brand: p.brand, type: p.type,
   functionalIngredients: p.functionalIngredients, otherIngredients: p.otherIngredients,
-  discontinued: p.discontinued, areas: p.areas, sponsorship: p.sponsorship,
+  discontinued: p.discontinued, reportedAt: p.reportedAt, areas: p.areas, sponsorship: p.sponsorship,
   hasFunctionality: p.hasFunctionality, noteFlags: p.noteFlags,
 });
 const index = { meta: full.meta, products: (full.products as Product[]).map(summary) };
