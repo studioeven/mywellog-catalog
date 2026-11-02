@@ -2,7 +2,7 @@
 // 근거는 둘뿐이다. ① 사용자가 직접 고른 관심 분야 ② 식습관 답변과 원료의 일반적인 식품 공급원 정보.
 import type { ProductSummary as Product } from "../types.ts";
 import type { Answers } from "../questions.ts";
-import { areaLabel } from "../areas.ts";
+import { areaLabel, mergedArea } from "../areas.ts";
 
 export interface Lead {
   key: string;
@@ -43,7 +43,7 @@ export function leadsFrom(a: Answers): Lead[] {
     label: areaLabel(id),
     basis: "interest",
     reason: `'${areaLabel(id)}' 분야가 궁금하다고 고르셨어요. 주된 기능성 원문에 이 분야의 표현이 있는 제품을 모았어요.`,
-    match: (p) => p.areas.includes(id),
+    match: (p) => p.areas.includes(mergedArea(id)),
   }));
   const diet = [...(a.rarelyEat ?? []).filter((v) => v !== "none"), ...(a.sunlight?.[0] === "low" ? ["sun"] : [])];
   for (const d of diet) {

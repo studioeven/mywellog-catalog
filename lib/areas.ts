@@ -7,9 +7,8 @@ export const AREAS: Area[] = [
   { id: "eye", label: "눈 건강", short: "눈 건강", match: /눈|황반/ },
   { id: "gut", label: "장 건강", short: "장 건강", match: /배변|장 건강|장건강|유익균|유해균|장내/ },
   { id: "immune", label: "면역 기능", short: "면역", match: /면역/ },
-  { id: "fatigue", label: "피로 개선", short: "피로", match: /(?<!눈의 )피로(?!도)/ },
   { id: "blood", label: "혈행·혈중 지질", short: "혈행", match: /혈행|혈액흐름|중성지방|중성지질|콜레스테롤/ },
-  { id: "liver", label: "간 건강", short: "간 건강", match: /간 건강|간건강|간기능/ },
+  { id: "liver", label: "간·피로", short: "간·피로", match: /간 건강|간건강|간기능|(?<!눈의 )피로(?!도)/ },
   { id: "bone", label: "뼈·관절·근육", short: "뼈·관절", match: /뼈|골다공증|관절|연골|근력|근육/ },
   { id: "antioxidant", label: "항산화", short: "항산화", match: /항산화|유해산소/ },
   { id: "skin", label: "피부 건강", short: "피부", match: /피부/ },
@@ -20,7 +19,12 @@ export const AREAS: Area[] = [
   { id: "nutrient", label: "비타민·무기질", short: "비타민", match: /에너지 ?생성|에너지 ?이용|정상적인|필요|형성|유지에 필요/ },
 ];
 
-export const areaLabel = (id: string) => AREAS.find((a) => a.id === id)?.label ?? id;
+// 예전 카탈로그의 분야 id를 합친 분야로 옮긴다(피로→간·피로)
+const MERGED: Record<string, string> = { fatigue: "liver" };
+export const mergedArea = (id: string) => MERGED[id] ?? id;
+export const mergeAreas = (ids: string[]) => [...new Set(ids.map(mergedArea))];
+
+export const areaLabel = (id: string) => AREAS.find((a) => a.id === mergedArea(id))?.label ?? id;
 
 export function classifyAreas(functionality: string | null): string[] {
   if (!functionality) return [];
