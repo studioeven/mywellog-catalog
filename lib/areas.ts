@@ -16,6 +16,20 @@ export const AREAS: Area[] = [
   { id: "memory", label: "기억력·인지", short: "기억력", match: /기억력|인지/ },
   { id: "sleep", label: "수면·긴장 완화", short: "수면", match: /수면|긴장/ },
   { id: "glucose", label: "혈당", short: "혈당", match: /혈당/ },
+  // 2026-11-25 명진: 기능성 태그를 늘림. 식약처 고시 기능성 문구에서 자주 쓰는 표현만 키워드로 둔다
+  { id: "menopause", label: "여성 갱년기", short: "갱년기", match: /갱년기/ },
+  { id: "pms", label: "월경 전 불편", short: "월경", match: /월경/ },
+  { id: "vaginal", label: "질 건강", short: "질 건강", match: /질 건강|질건강|질내/ },
+  { id: "prostate", label: "전립선", short: "전립선", match: /전립선/ },
+  { id: "urinary", label: "요로·배뇨", short: "배뇨", match: /요로|배뇨|방광/ },
+  { id: "stomach", label: "위 건강·소화", short: "위·소화", match: /위 건강|위건강|위 점막|위점막|위 불편|헬리코박터|소화/ },
+  { id: "pressure", label: "혈압", short: "혈압", match: /혈압/ },
+  { id: "dental", label: "치아·잇몸", short: "치아", match: /치아|잇몸|충치/ },
+  { id: "hair", label: "모발", short: "모발", match: /모발/ },
+  { id: "stress", label: "스트레스", short: "스트레스", match: /스트레스/ },
+  { id: "endurance", label: "운동 수행·지구력", short: "운동력", match: /운동수행|운동 수행|지구력/ },
+  { id: "nose", label: "코·과민 반응", short: "코", match: /코 상태|코상태|과민 ?반응/ },
+  { id: "growth", label: "어린이 성장", short: "성장", match: /키 성장|어린이 성장|성장기/ },
   { id: "nutrient", label: "비타민·무기질", short: "비타민", match: /에너지 ?생성|에너지 ?이용|정상적인|필요|형성|유지에 필요/ },
 ];
 
